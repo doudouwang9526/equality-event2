@@ -4,59 +4,366 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>성평등 주간 전시 이벤트 - 오늘 평등의 한마디</title>
+  
+  <!-- 탭 귀여운 이모지 파비콘 (💜) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root { --primary: #8b5cf6; --bg: #f5f3ff; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-    body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-    .container { width: 100%; max-width: 400px; text-align: center; display: flex; flex-direction: column; gap: 16px; }
-    .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-    .input-box { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin: 15px 0 10px; text-align: center; }
-    .btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-    .list { list-style: none; margin-top: 15px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
-    .tag { background: #f3e8ff; color: #6b21a8; padding: 4px 10px; border-radius: 8px; font-size: 13px; }
+    :root {
+      --primary: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --bg-color: #f5f3ff;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-sub: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", system-ui, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      background-image: radial-gradient(#ddd6fe 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: var(--text-main);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge {
+      background: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #6d28d9;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: -8px;
+    }
+
+    .count-badge {
+      background: var(--primary);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    }
+
+    .count-number {
+      background: rgba(255, 255, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin: 0 2px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      width: 100%;
+      padding: 32px 24px;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .icon-gift { font-size: 48px; }
+
+    .card-desc {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.2s;
+      background: #fafafa;
+      text-align: center;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1.5px solid #e9d5ff;
+    }
+    .btn-secondary:hover { background: #f3e8ff; }
+
+    /* 두 번째 화면 결과 스타일 */
+    .target-tag {
+      background: #f3e8ff;
+      color: #7e22ce;
+      padding: 6px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .category-tag {
+      background: #fff1f2;
+      color: #e11d48;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .quote-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.5;
+      margin: 8px 0;
+      word-break: keep-all;
+    }
+
+    .ending-box {
+      background: #f9fafb;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.4;
+      width: 100%;
+      word-break: keep-all;
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>오늘 평등의 한마디 🧹</h2>
-    <div class="card">
-      <p><b>닉네임을 입력해주세요!</b></p>
-      <input type="text" id="nickname" class="input-box" placeholder="예: 마음이, 벼리">
-      <button class="btn" onclick="saveNickname()">한마디 뽑기 🪄</button>
-      <ul id="participant-list" class="list"></ul>
+    <div class="badge">성평등 주간 전시 이벤트 🧹</div>
+    <h1>오늘 평등의 한마디</h1>
+    <p class="subtitle">당신을 위한 따뜻한 메시지를 뽑아보세요!</p>
+
+    <div class="count-badge">
+      ♥ 지금까지 <span id="total-count" class="count-number">0</span> 번째 평등이 전해졌어요!
+    </div>
+
+    <!-- 첫 번째 화면: 닉네임 입력 -->
+    <div id="step-1" class="card">
+      <div class="icon-gift">🎁</div>
+      <p class="card-desc">이름이나 닉네임을 적어주시면<br>특별한 맞춤 카드가 작성돼요!</p>
+      <input type="text" id="nickname" class="input-box" placeholder="예: 마음이, 벼리, 민우" onkeypress="if(event.keyCode==13) startDraw()">
+      <button class="btn btn-primary" onclick="startDraw()">한마디 뽑기 🪄</button>
+    </div>
+
+    <!-- 두 번째 화면: 뽑힌 한마디 결과 -->
+    <div id="step-2" class="card hidden">
+      <div class="target-tag">🌸 <span id="res-nickname"></span> 님께 드리는 평등의 한마디</div>
+      <div id="res-category" class="category-tag">🌱 선택과 가능성</div>
+      <div id="res-quote" class="quote-text">"당신은 무엇이든 선택할 수 있어요."</div>
+      <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
+    </div>
+
+    <!-- 두 번째 화면에서만 보이는 하단 버튼 그룹 -->
+    <div id="button-group" class="container hidden" style="gap: 10px;">
+      <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
+      <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
     </div>
   </div>
 
   <script>
+    // ⬇️ 본인의 Supabase Project URL과 anon public 키로 수정해주세요
     const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co/rest/v1/';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
+
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function fetchParticipants() {
-      const { data } = await supabaseClient.from('participants').select('*').order('id', { ascending: false });
+    // 문구 데이터베이스
+    const quotesData = [
+      {
+        category: "🌱 선택과 가능성",
+        quotes: [
+          "당신은 무엇이든 선택할 수 있어요.",
+          "하고 싶은 일을 선택하는 데 정해진 답은 없어요.",
+          "당신의 가능성을 성별이나 나이로 정하지 마세요.",
+          "어떤 사람이 될지는 당신이 정할 수 있어요.",
+          "좋아하는 것에는 정답이 없어요.",
+          "당신이 원하는 모습 그대로 살아가도 괜찮아요.",
+          "새로운 것을 시작하기에 늦은 때는 없어요.",
+          "당신의 꿈에 정해진 성별은 없어요."
+        ]
+      },
+      {
+        category: "🌈 있는 그대로의 나",
+        quotes: [
+          "세상에 똑같은 사람은 없어요. 다르기 때문에 더 멋져요.",
+          "당신다운 모습은 충분히 멋져요.",
+          "다른 사람과 다르다는 것은 잘못된 것이 아니에요.",
+          "나를 다른 사람의 기준에 맞추지 않아도 괜찮아요.",
+          "모두에게는 저마다의 속도와 모습이 있어요.",
+          "‘평범함’이라는 기준에 나를 맞추지 않아도 괜찮아요."
+        ]
+      },
+      {
+        category: "💜 서로를 존중하는 관계",
+        quotes: [
+          "내 생각도 소중하고, 다른 사람의 생각도 소중해요.",
+          "좋아하는 마음과 존중하는 마음은 함께할 수 있어요.",
+          "가까운 사이일수록 서로의 경계를 존중해주세요.",
+          "상대가 싫다고 말하면 멈출 수 있는 것이 멋진 관계예요.",
+          "나와 다른 선택을 존중하는 것도 멋진 선택이에요.",
+          "누군가의 삶을 대신 결정할 수는 없어요."
+        ]
+      },
+      {
+        category: "🌻 나이와 상관없이",
+        quotes: [
+          "나이는 당신이 좋아하는 것을 결정하지 않아요.",
+          "새로운 꿈을 꾸는 데 나이는 중요하지 않아요.",
+          "나이에 상관없이 하고 싶은 일을 할 수 있어요.",
+          "어린 사람의 생각도, 나이 든 사람의 생각도 소중해요.",
+          "나이를 알기 전에 한 사람의 이야기를 먼저 들어보세요."
+        ]
+      }
+    ];
+
+    const endingSentences = [
+      "모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.",
+      "서로의 다름을 존중하는 것에서 성평등은 시작돼요.",
+      "성평등은 모두를 똑같이 만드는 것이 아니라, 각자의 선택을 존중하는 거예요.",
+      "나답게 살아갈 자유, 서로의 선택을 존중할 권리. 우리 모두에게 필요해요."
+    ];
+
+    let currentNickname = "";
+
+    // 실시간 총 카운터 불러오기
+    async function fetchCount() {
+      const { data, count, error } = await supabaseClient
+        .from('participants')
+        .select('*', { count: 'exact' });
+
       if (data) {
-        const ul = document.getElementById('participant-list');
-        ul.innerHTML = '';
-        data.forEach(item => {
-          const li = document.createElement('li');
-          li.className = 'tag';
-          li.textContent = item.nickname;
-          ul.appendChild(li);
-        });
+        document.getElementById('total-count').textContent = data.length;
       }
     }
 
-    async function saveNickname() {
+    // 뽑기 시작
+    async function startDraw() {
       const input = document.getElementById('nickname');
       const name = input.value.trim();
-      if (!name) return;
+      if (!name) {
+        alert("닉네임을 입력해 주세요!");
+        return;
+      }
+
+      currentNickname = name;
+
+      // DB에 참여 저장
       await supabaseClient.from('participants').insert([{ nickname: name }]);
-      input.value = '';
-      fetchParticipants();
+      fetchCount();
+
+      // 카드로 전환 및 내용 뽑기
+      showCard();
     }
 
-    fetchParticipants();
+    // 카드 내용 생성 및 화면 전환
+    function showCard() {
+      const catObj = quotesData[Math.floor(Math.random() * quotesData.length)];
+      const quote = catObj.quotes[Math.floor(Math.random() * catObj.quotes.length)];
+      const ending = endingSentences[Math.floor(Math.random() * endingSentences.length)];
+
+      document.getElementById('res-nickname').textContent = currentNickname;
+      document.getElementById('res-category').textContent = catObj.category;
+      document.getElementById('res-quote').textContent = `"${quote}"`;
+      document.getElementById('res-ending').textContent = ending;
+
+      document.getElementById('step-1').classList.add('hidden');
+      document.getElementById('step-2').classList.remove('hidden');
+      document.getElementById('button-group').classList.remove('hidden');
+    }
+
+    // 다른 한마디 더 뽑기
+    function drawAgain() {
+      showCard();
+    }
+
+    // 처음으로 돌아가기
+    function resetAll() {
+      document.getElementById('nickname').value = '';
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('button-group').classList.add('hidden');
+      document.getElementById('step-1').classList.remove('hidden');
+    }
+
+    // 초기 카운트 로드 & 실시간 업데이트
+    fetchCount();
+    supabaseClient
+      .channel('public:participants')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'participants' }, () => {
+        fetchCount();
+      })
+      .subscribe();
   </script>
 </body>
 </html>
