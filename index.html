@@ -24,17 +24,19 @@
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", system-ui, sans-serif;
     }
 
-    body {
-      background-color: var(--bg-color);
-      background-image: radial-gradient(#ddd6fe 1.5px, transparent 1.5px);
-      background-size: 24px 24px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: -10px;
-      color: var(--text-main);
-    }
+    /* 1. body가 화면을 억지로 위아래로 벌리지 않게 padding을 줍니다 */
+body {
+  background-color: var(--bg-color);
+  background-image: radial-gradient(#ddd6fe 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0; /* 위아래 여백을 줘서 스크롤되더라도 예쁘게 잡힙니다 */
+  color: var(--text-main);
+}
+
 
     .container {
   width: 100%;
@@ -98,11 +100,13 @@
       text-align: center;
     }
 
+/* 2. 로고가 흰 카드에 무조건 강제로 붙어있게 설정 */
 .logo-img {
-  max-width: 220px;
+  max-width: 200px;
   height: auto;
-  margin-top: -10px;
-  pointer-events: none;
+  margin-top: -28px !important; /* !important를 붙여서 무조건 카드에 끌어올립니다 */
+  position: relative;
+  z-index: 10;
 }
     .icon-gift { font-size: 48px; }
 
@@ -226,16 +230,14 @@
       <div id="res-quote" class="quote-text">"당신은 무엇이든 선택할 수 있어요."</div>
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
     </div>
-
+<!-- 🌟 로고가 카드(step-2) 바로 밑에 붙어있어야 합니다! -->
+    <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
+    
     <div id="button-group" class="container hidden" style="gap: 10px;">
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
     </div>
-    <!-- 하얀 틀 밖 하단으로 이동한 로고 -->
-    <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
-  </div>
-
-
+ 
   <script>
     const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
