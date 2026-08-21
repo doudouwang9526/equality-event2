@@ -31,8 +31,8 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* 상단 정렬로 여백 벌어짐 방지 */
-      padding: 40px 16px;
+      align-items: center;
+      padding: 20px;
       color: var(--text-main);
     }
 
@@ -99,12 +99,11 @@
       text-align: center;
     }
 
-    /* 흰색 카드 바로 바깥 밑바닥에 딱 밀착시키는 스타일링 */
+    /* 하얀 틀 바깥으로 빠진 로고 스타일링 */
     .logo-img {
-      max-width: 200px;
+      max-width: 240px;
       height: auto;
-      margin-top: -8px; /* 카드와의 유격 상쇄 */
-      display: block;
+      margin-top: 8px;
     }
 
     .icon-gift { font-size: 48px; }
@@ -230,15 +229,15 @@
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
     </div>
 
-
-    <!-- 버튼 그룹 -->
     <div id="button-group" class="container hidden" style="gap: 10px;">
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
     </div>
-  </div>
- <!-- 흰 카드 직후 위치에 고정시킨 로고 -->
+
+    <!-- 하얀 틀 밖 하단으로 이동한 로고 -->
     <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
