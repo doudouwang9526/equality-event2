@@ -86,24 +86,26 @@
       margin: 0 2px;
     }
 
+    /* ⬇️ 카드 상하 내부 여백을 24px/16px로 대폭 줄였습니다 ⬇️ */
     .card {
       background: var(--card-bg);
       width: 100%;
-      padding: 32px 24px 20px 24px; /* 아래쪽 패딩 조절 */
+      padding: 24px 20px 16px 20px;
       border-radius: 24px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 12px; /* 카드 안쪽 요소를 더 촘촘하게 연결 */
       text-align: center;
     }
 
-    /* ⬇️ 카드 안쪽 맨 밑에 들어갈 로고 크기 설정 ⬇️ */
+    /* ⬇️ 버튼 바로 밑에 바짝 붙도록 마진 최소화 ⬇️ */
     .logo-img {
       max-width: 260px;
       height: auto;
-      margin-top: 10px; /* 버튼과의 여백 */
+      margin-top: 4px;
+      margin-bottom: 0;
     }
 
     .icon-gift { font-size: 48px; }
@@ -213,14 +215,14 @@
       ♥ 지금까지 <span id="total-count" class="count-number">0</span> 번째 평등이 전해졌어요!
     </div>
 
-    <!-- 첫 번째 화면 (카드 박스 안으로 로고 이동) -->
+    <!-- 첫 번째 화면 -->
     <div id="step-1" class="card">
       <div class="icon-gift">🎁</div>
       <p class="card-desc">이름이나 닉네임을 적어주시면<br>특별한 맞춤 카드가 작성돼요!</p>
       <input type="text" id="nickname" class="input-box" placeholder="예: 마음이, 벼리, 민우" onkeypress="if(event.keyCode==13) startDraw()">
       <button class="btn btn-primary" onclick="startDraw()">한마디 뽑기 🪄</button>
       
-      <!-- ⬇️ 카드 안쪽 하단으로 로고 배치 ⬇️ -->
+      <!-- 버튼 바로 아래 노출 -->
       <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
     </div>
 
@@ -231,7 +233,6 @@
       <div id="res-quote" class="quote-text">"당신은 무엇이든 선택할 수 있어요."</div>
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
       
-      <!-- 두 번째 카드에도 로고 노출 -->
       <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
     </div>
 
