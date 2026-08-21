@@ -99,12 +99,12 @@
       text-align: center;
     }
 
-    /* 하얀 틀 바깥으로 빠진 로고 스타일링 */
-    .logo-img {
-      max-width: 220px;
-      height: auto;
-      margin-top: -16px;
-    }
+   .logo-img {
+  max-width: 220px;
+  height: auto;
+  margin-top: -24px; /* gap 간격을 씹고 하얀 카드 아래쪽에 바짝 붙임 */
+  z-index: 1;        /* 카드 위/아래 레이어 정리 */
+}
 
     .icon-gift { font-size: 48px; }
 
@@ -233,10 +233,10 @@
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
     </div>
-
     <!-- 하얀 틀 밖 하단으로 이동한 로고 -->
     <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
   </div>
+
 
   <script>
     const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
