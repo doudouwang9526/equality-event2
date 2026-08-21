@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>성평등 주간 전시 이벤트 - 오늘 평등의 한마디</title>
   
-  <!-- 탭 이모지 파비콘 (💜) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 
   <style>
@@ -44,6 +43,12 @@
       flex-direction: column;
       align-items: center;
       gap: 16px;
+    }
+
+    .logo-img {
+      max-width: 220px;
+      height: auto;
+      margin-bottom: 4px;
     }
 
     .badge {
@@ -199,6 +204,9 @@
 <body>
 
   <div class="container">
+    <!-- 기관 로고 영역 -->
+    <img src="로고(가로형)2.png" alt="시립청소년성문화센터 창동" class="logo-img">
+
     <div class="badge">성평등 주간 전시 이벤트 🧹</div>
     <h1>오늘 평등의 한마디</h1>
     <p class="subtitle">당신을 위한 따뜻한 메시지를 뽑아보세요!</p>
@@ -207,7 +215,7 @@
       ♥ 지금까지 <span id="total-count" class="count-number">0</span> 번째 평등이 전해졌어요!
     </div>
 
-    <!-- 첫 번째 화면: 닉네임 입력 -->
+    <!-- 첫 번째 화면 -->
     <div id="step-1" class="card">
       <div class="icon-gift">🎁</div>
       <p class="card-desc">이름이나 닉네임을 적어주시면<br>특별한 맞춤 카드가 작성돼요!</p>
@@ -215,7 +223,7 @@
       <button class="btn btn-primary" onclick="startDraw()">한마디 뽑기 🪄</button>
     </div>
 
-    <!-- 두 번째 화면: 뽑힌 한마디 결과 -->
+    <!-- 두 번째 화면 -->
     <div id="step-2" class="card hidden">
       <div class="target-tag">🌸 <span id="res-nickname"></span> 님께 드리는 평등의 한마디</div>
       <div id="res-category" class="category-tag">🌱 선택과 가능성</div>
@@ -223,7 +231,6 @@
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
     </div>
 
-    <!-- 두 번째 화면 버튼 그룹 -->
     <div id="button-group" class="container hidden" style="gap: 10px;">
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
@@ -231,7 +238,7 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
+    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co/rest/v1/';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
 
     const quotesData = [
@@ -291,7 +298,6 @@
 
     let currentNickname = "";
 
-    // REST API 직접 조회 (Count)
     async function fetchCount() {
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/participants?select=id`, {
@@ -314,12 +320,11 @@
       }
     }
 
-    // REST API 직접 저장 (Insert)
     async function startDraw() {
       const input = document.getElementById('nickname');
       const name = input.value.trim();
       if (!name) {
-        alert("닉네임을 입력해 주세요!");
+        alert("불리고 싶은 이름을 입력해 주세요!");
         return;
       }
 
@@ -370,7 +375,6 @@
       document.getElementById('step-1').classList.remove('hidden');
     }
 
-    // 실행
     fetchCount();
   </script>
 </body>
