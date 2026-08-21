@@ -45,12 +45,12 @@
       gap: 16px;
     }
 
-    /* ⬇️ 로고 크기를 대폭 키우고 카드 바짝 위로 밀착시켰습니다 ⬇️ */
+    /* ⬇️ 카드 바로 밑에 찰싹 붙도록 여백 조절 ⬇️ */
     .logo-img {
       max-width: 280px;
       height: auto;
-      margin-top: -4px;
-      margin-bottom: 8px;
+      margin-top: -24px; /* 음수 마진으로 위로 싹 끌어올림 */
+      margin-bottom: 0;
     }
 
     .badge {
@@ -240,7 +240,6 @@
   </div>
 
   <script>
-    // URL 뒤쪽 중복 경로를 정리했습니다.
     const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
 
