@@ -45,13 +45,13 @@
       gap: 16px;
     }
 
+    /* ⬇️ 로고 크기를 대폭 키우고 카드 바짝 위로 밀착시켰습니다 ⬇️ */
     .logo-img {
-  max-width: 200px;
-  height: auto;
-  margin-top: 5px;   /* 카드/버튼과의 위쪽 여백 */
-  margin-bottom: 10px; /* 맨 아래쪽 여백 */
-  opacity: 0.9;        /* 하단에 자연스럽게 어우러지도록 살짝 투명도 조절 (선택사항) */
-}
+      max-width: 280px;
+      height: auto;
+      margin-top: -4px;
+      margin-bottom: 8px;
+    }
 
     .badge {
       background: white;
@@ -206,8 +206,6 @@
 <body>
 
   <div class="container">
-    
-
     <div class="badge">성평등 주간 전시 이벤트 🧹</div>
     <h1>오늘 평등의 한마디</h1>
     <p class="subtitle">당신을 위한 따뜻한 메시지를 뽑아보세요!</p>
@@ -236,12 +234,14 @@
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
     </div>
-<!-- 기관 로고 영역 -->
+
+    <!-- 기관 로고 영역 -->
     <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co/rest/v1/';
+    // URL 뒤쪽 중복 경로를 정리했습니다.
+    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
 
     const quotesData = [
