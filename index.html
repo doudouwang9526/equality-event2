@@ -87,26 +87,30 @@ body {
       margin: 0 2px;
     }
 
-    .card {
-      background: var(--card-bg);
-      width: 100%;
-      padding: 24px 20px;
-      border-radius: 24px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: center;
-    }
+   /* 1. 카드가 기준점(기준 축)이 되도록 설정 */
+.card {
+  background: var(--card-bg);
+  width: 100%;
+  padding: 24px 20px 40px 20px; /* 맨 아래 여백을 조금 주어 공간 확보 */
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  position: relative; /* 🌟 기준점이 되도록 꼭 추가! */
+}
 
-/* 2. 로고가 흰 카드에 무조건 강제로 붙어있게 설정 */
+/* 2. 로고를 카드 '바깥 밑바닥'에 절대 좌표로 딱 붙이기 */
 .logo-img {
   max-width: 200px;
   height: auto;
-  margin-top: -28px !important; /* !important를 붙여서 무조건 카드에 끌어올립니다 */
-  position: relative;
-  z-index: 10;
+  position: absolute;   /* 🌟 부모 카드를 기준으로 위치를 직접 지정 */
+  top: 100%;            /* 카드가 끝나는 바로 아래 지점 */
+  left: 50%;            /* 중앙 정렬 */
+  transform: translateX(-50%); /* 중앙 정렬 보정 */
+  margin-top: 10px;     /* 카드 바닥과 로고 사이의 아주 살짝의 틈 (원하시는 만큼 숫자를 줄이거나 0으로 변경 가능!) */
 }
     .icon-gift { font-size: 48px; }
 
@@ -215,12 +219,15 @@ body {
       ♥ 지금까지 <span id="total-count" class="count-number">0</span> 번째 평등이 전해졌어요!
     </div>
 
-    <!-- 첫 번째 화면 -->
+   <!-- 첫 번째 화면 -->
     <div id="step-1" class="card">
       <div class="icon-gift">🎁</div>
       <p class="card-desc">이름이나 닉네임을 적어주시면<br>특별한 맞춤 카드가 작성돼요!</p>
       <input type="text" id="nickname" class="input-box" placeholder="예: 마음이, 벼리, 민우" onkeypress="if(event.keyCode==13) startDraw()">
       <button class="btn btn-primary" onclick="startDraw()">한마디 뽑기 ✨</button>
+      
+      <!-- 🌟 카드 바깥 바닥에 바짝 붙일 로고 (step-1용) -->
+      <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
     </div>
 
     <!-- 두 번째 화면 -->
@@ -229,9 +236,12 @@ body {
       <div id="res-category" class="category-tag">🌱 선택과 가능성</div>
       <div id="res-quote" class="quote-text">"당신은 무엇이든 선택할 수 있어요."</div>
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
+      
+      <!-- 🌟 카드 바깥 바닥에 바짝 붙일 로고 (step-2용) -->
+      <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
     </div>
-<!-- 🌟 로고가 카드(step-2) 바로 밑에 붙어있어야 합니다! -->
-    <img src="센터 로고.png" alt="시립청소년성문화센터 창동" class="logo-img">
+
+    <!-- 기존에 제일 밑에 혼자 있던 <img class="logo-img"> 태그는 삭제해 주세요! -->
     
     <div id="button-group" class="container hidden" style="gap: 10px;">
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
