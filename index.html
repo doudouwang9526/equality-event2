@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>성평등 주간 전시 이벤트 - 오늘 평등의 한마디</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { --primary: #8b5cf6; --bg: #f5f3ff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body { background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .container { width: 100%; max-width: 400px; text-align: center; display: flex; flex-direction: column; gap: 16px; }
+    .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .input-box { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin: 15px 0 10px; text-align: center; }
+    .btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    .list { list-style: none; margin-top: 15px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .tag { background: #f3e8ff; color: #6b21a8; padding: 4px 10px; border-radius: 8px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>오늘 평등의 한마디 🧹</h2>
+    <div class="card">
+      <p><b>닉네임을 입력해주세요!</b></p>
+      <input type="text" id="nickname" class="input-box" placeholder="예: 마음이, 벼리">
+      <button class="btn" onclick="saveNickname()">한마디 뽑기 🪄</button>
+      <ul id="participant-list" class="list"></ul>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co/rest/v1/';
+    const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function fetchParticipants() {
+      const { data } = await supabaseClient.from('participants').select('*').order('id', { ascending: false });
+      if (data) {
+        const ul = document.getElementById('participant-list');
+        ul.innerHTML = '';
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'tag';
+          li.textContent = item.nickname;
+          ul.appendChild(li);
+        });
+      }
+    }
+
+    async function saveNickname() {
+      const input = document.getElementById('nickname');
+      const name = input.value.trim();
+      if (!name) return;
+      await supabaseClient.from('participants').insert([{ nickname: name }]);
+      input.value = '';
+      fetchParticipants();
+    }
+
+    fetchParticipants();
+  </script>
+</body>
+</html>
