@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>성평등 주간 전시 이벤트 - 오늘 평등의 한마디</title>
   
-  <!-- 탭 귀여운 이모지 파비콘 (💜) -->
+  <!-- 탭 이모지 파비콘 (💜) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.0"></script>
   <style>
     :root {
       --primary: #8b5cf6;
@@ -156,7 +155,6 @@
     }
     .btn-secondary:hover { background: #f3e8ff; }
 
-    /* 두 번째 화면 결과 스타일 */
     .target-tag {
       background: #f3e8ff;
       color: #7e22ce;
@@ -225,7 +223,7 @@
       <div id="res-ending" class="ending-box">모두가 자기답게 살아갈 수 있을 때, 세상은 조금 더 평등해져요.</div>
     </div>
 
-    <!-- 두 번째 화면에서만 보이는 하단 버튼 그룹 -->
+    <!-- 두 번째 화면 버튼 그룹 -->
     <div id="button-group" class="container hidden" style="gap: 10px;">
       <button class="btn btn-primary" onclick="drawAgain()">다른 한마디 더 뽑기 🔄</button>
       <button class="btn btn-secondary" onclick="resetAll()">이름 바꿔서 다시하기 👤</button>
@@ -233,15 +231,9 @@
   </div>
 
   <script>
-    // ⬇️ 본인의 Supabase Project URL과 anon public 키로 수정해주세요
-    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co/rest/v1/';
+    const SUPABASE_URL = 'https://sfcanpezrxahqxipiewm.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Ci1TKdWohbd55vUBqffmEw_vSw187SH';
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { persistSession: false }
-});
-
-    // 문구 데이터베이스
     const quotesData = [
       {
         category: "🌱 선택과 가능성",
@@ -284,7 +276,7 @@
           "나이는 당신이 좋아하는 것을 결정하지 않아요.",
           "새로운 꿈을 꾸는 데 나이는 중요하지 않아요.",
           "나이에 상관없이 하고 싶은 일을 할 수 있어요.",
-          "어린 사람의 생각도, 나이 든 사람의 생각도 소중해요.",
+          "어린 사람의 생각도, 나이 든 생각도 소중해요.",
           "나이를 알기 전에 한 사람의 이야기를 먼저 들어보세요."
         ]
       }
@@ -299,18 +291,30 @@
 
     let currentNickname = "";
 
-    // 실시간 총 카운터 불러오기
+    // REST API 직접 조회 (Count)
     async function fetchCount() {
-      const { data, count, error } = await supabaseClient
-        .from('participants')
-        .select('*', { count: 'exact' });
-
-      if (data) {
-        document.getElementById('total-count').textContent = data.length;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/participants?select=id`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'count=exact'
+          }
+        });
+        const contentRange = res.headers.get('content-range');
+        if (contentRange) {
+          const total = contentRange.split('/')[1];
+          document.getElementById('total-count').textContent = total || 0;
+        } else {
+          const data = await res.json();
+          if (Array.isArray(data)) document.getElementById('total-count').textContent = data.length;
+        }
+      } catch (e) {
+        console.error(e);
       }
     }
 
-    // 뽑기 시작
+    // REST API 직접 저장 (Insert)
     async function startDraw() {
       const input = document.getElementById('nickname');
       const name = input.value.trim();
@@ -321,15 +325,25 @@
 
       currentNickname = name;
 
-      // DB에 참여 저장
-      await supabaseClient.from('participants').insert([{ nickname: name }]);
-      fetchCount();
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/participants`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ nickname: name })
+        });
+        await fetchCount();
+      } catch (e) {
+        console.error(e);
+      }
 
-      // 카드로 전환 및 내용 뽑기
       showCard();
     }
 
-    // 카드 내용 생성 및 화면 전환
     function showCard() {
       const catObj = quotesData[Math.floor(Math.random() * quotesData.length)];
       const quote = catObj.quotes[Math.floor(Math.random() * catObj.quotes.length)];
@@ -345,12 +359,10 @@
       document.getElementById('button-group').classList.remove('hidden');
     }
 
-    // 다른 한마디 더 뽑기
     function drawAgain() {
       showCard();
     }
 
-    // 처음으로 돌아가기
     function resetAll() {
       document.getElementById('nickname').value = '';
       document.getElementById('step-2').classList.add('hidden');
@@ -358,14 +370,8 @@
       document.getElementById('step-1').classList.remove('hidden');
     }
 
-    // 초기 카운트 로드 & 실시간 업데이트
+    // 실행
     fetchCount();
-    supabaseClient
-      .channel('public:participants')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'participants' }, () => {
-        fetchCount();
-      })
-      .subscribe();
   </script>
 </body>
 </html>
